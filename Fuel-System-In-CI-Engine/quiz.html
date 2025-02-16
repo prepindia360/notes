@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engine Systems Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --primary-dark: #2563eb;
+            --success: #10b981;
+            --success-light: #34d399;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .section {
+            background: var(--surface);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .question-card {
+            background: var(--background);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-text {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 60px;
+            padding: 0.25rem 0.5rem;
+            background: #dbeafe;
+            border-radius: 0.25rem;
+            margin: 0 0.25rem;
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+
+        .answer-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .answer {
+            background: var(--success-light);
+            color: #064e3b;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .answer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .show-answer {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .show-answer:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .show-answer.revealed {
+            background: var(--success);
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
+            .question-card {
+                padding: 0.75rem;
+            }
+
+            .question-text {
+                font-size: 0.95rem;
+            }
+
+            .show-answer {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Engine Systems Quiz</h1>
+            <p>Test your knowledge with these fill-in-the-blank questions</p>
+        </header>
+
+        <!-- All Questions Section -->
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-list-ol"></i>
+                Fill in the Blanks Quiz
+            </h2>
+            <div class="question-list">
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <p class="question-text">1. In a diesel engine, only <span class="blank">____</span> is drawn in during the suction stroke.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">air</span>
+                    </div>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <p class="question-text">2. During the compression stroke, the air is <span class="blank">____</span>.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">compressed</span>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <p class="question-text">3. Fuel is injected in the form of a <span class="blank">____</span> at the end of the compression stroke.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">fine spray</span>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <p class="question-text">4. The fuel injection system must inject fuel at the <span class="blank">____</span> time in the cycle.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">right</span>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <p class="question-text">5. Proper <span class="blank">____</span> of fuel ensures efficient combustion.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">atomization</span>
+                    </div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card">
+                    <p class="question-text">6. The quantity of fuel injected depends on the engine <span class="blank">____</span>.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">load</span>
+                    </div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card">
+                    <p class="question-text">7. The main function of the <span class="blank">____</span> is to store fuel for the engine.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">fuel tank</span>
+                    </div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-card">
+                    <p class="question-text">8. The <span class="blank">____</span> removes dirt and impurities from the fuel before it reaches the engine.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">fuel filter</span>
+                    </div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-card">
+                    <p class="question-text">9. A <span class="blank">____</span> is used to separate water from diesel fuel.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">water separator</span>
+                    </div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-card">
+                    <p class="question-text">10. The fuel pump is responsible for <span class="blank">____</span> fuel from the tank to the injectors.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">pumping</span>
+                    </div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-card">
+                    <p class="question-text">11. High-pressure pumps in diesel engines include Inline FIP, Rotary Pump, and <span class="blank">____</span>.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">High-Pressure Pump (CRDI)</span>
+                    </div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-card">
+                    <p class="question-text">12. <span class="blank">____</span> are commonly used in Common Rail Direct Injection (CRDI) systems.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">EDC pumps</span>
+                    </div>
+                </div>
+
+                <!-- Question 13 -->
+                <div class="question-card">
+                    <p class="question-text">13. The <span class="blank">____</span> injects fuel into the combustion chamber at high pressure.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">fuel injector</span>
+                    </div>
+                </div>
+
+                <!-- Question 14 -->
+                <div class="question-card">
+                    <p class="question-text">14. CRDI stands for <span class="blank">____</span>.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">Common Rail Direct Injection</span>
+                    </div>
+                </div>
+
+                <!-- Question 15 -->
+                <div class="question-card">
+                    <p class="question-text">15. The CRDI system improves <span class="blank">____</span> efficiency and reduces emissions.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">fuel</span>
+                    </div>
+                </div>
+
+                <!-- Question 16 -->
+                <div class="question-card">
+                    <p class="question-text">16. A turbocharger with a <span class="blank">____</span> mechanism helps regulate boost pressure.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">wastegate</span>
+                    </div>
+                </div>
+
+                <!-- Question 17 -->
+                <div class="question-card">
+                    <p class="question-text">17. A <span class="blank">____</span> turbocharger has two separate exhaust gas inlets for better performance.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">twin-scroll</span>
+                    </div>
+                </div>
+
+                <!-- Question 18 -->
+                <div class="question-card">
+                    <p class="question-text">18. A <span class="blank">____</span> adjusts airflow dynamically for better engine efficiency.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">variable geometry turbocharger (VGT)</span>
+                    </div>
+                </div>
+
+                <!-- Question 19 -->
+                <div class="question-card">
+                    <p class="question-text">19. An <span class="blank">____</span> turbocharger uses electric power to reduce lag and provide instant boost.</p>
+                    <div class="answer-section">
+                        <button class="show-answer" onclick="revealAnswer(this)">
+                            <i class="fas fa-eye"></i>
+                            Show Answer
+                        </button>
+                        <span class="answer">electric</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function revealAnswer(button) {
+            const answerSection = button.parentElement;
+            const answer = answerSection.querySelector('.answer');
+            
+            // Toggle answer visibility
+            answer.classList.toggle('visible');
+            
+            // Update button
+            if (answer.classList.contains('visible')) {
+                button.innerHTML = '<i class="fas fa-check"></i> Answer Shown';
+                button.classList.add('revealed');
+            } else {
+                button.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                button.classList.remove('revealed');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engine Systems Flashcards</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #818cf8;
+            --secondary: #059669;
+            --secondary-light: #34d399;
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 2rem;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--secondary-light), var(--secondary));
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-secondary);
+            margin-top: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+                margin: 1rem auto;
+            }
+
+            .header {
+                padding: 1.5rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .header p {
+                font-size: 0.9rem;
+            }
+
+            .controls {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                margin: 1rem 0;
+            }
+
+            .btn {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+                width: 100%;
+            }
+
+            .btn i {
+                margin: 0;
+            }
+
+            .flashcard {
+                height: 400px;
+                margin: 0 auto;
+            }
+
+            .card-face {
+                padding: 1rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-content {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+
+            .emoji {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .stats {
+                font-size: 0.9rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .flashcard {
+                height: 350px;
+            }
+
+            .card-face {
+                padding: 1rem 0.75rem;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Animation classes */
+        .slide-in {
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        .slide-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Engine Systems Flashcards</h1>
+        <p>Click cards to flip • Swipe to navigate</p>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <button class="btn btn-primary" id="prevBtn">
+                <i class="fas fa-arrow-left"></i> <span>Previous</span>
+            </button>
+            <button class="btn btn-secondary" id="shuffleBtn">
+                <i class="fas fa-random"></i> <span>Shuffle</span>
+            </button>
+            <button class="btn btn-primary" id="nextBtn">
+                <span>Next</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard">
+                <div class="card-face card-front">
+                    <div class="emoji">🛠</div>
+                    <h2 class="card-title">Diesel Engine Suction Stroke</h2>
+                    <p class="card-content">Click to reveal the answer</p>
+                </div>
+                <div class="card-face card-back">
+                    <div class="emoji">💡</div>
+                    <div class="card-content">
+                        <p>• Only air is drawn in during the suction stroke</p>
+                        <p>• Air is compressed during the compression stroke</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" style="width: 0%"></div>
+        </div>
+        <div class="stats">
+            Card <span id="currentCard">1</span> of <span id="totalCards">7</span>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                emoji: "🛠",
+                title: "Diesel Engine Suction Stroke",
+                content: ["• Only air is drawn in during the suction stroke", "• Air is compressed during the compression stroke"]
+            },
+            {
+                emoji: "⛽",
+                title: "Fuel Injection in Diesel Engines",
+                content: ["• Fuel is injected as a fine spray at the end of compression stroke", "• This ensures efficient combustion"]
+            },
+            {
+                emoji: "✅",
+                title: "Fuel Injection System Requirements",
+                content: ["1. Inject fuel at the right time", "2. Ensure proper atomization of fuel", "3. Inject the correct quantity based on load"]
+            },
+            {
+                emoji: "🚗",
+                title: "Main Parts of CI Engine Fuel System",
+                content: ["• Fuel Tank", "• Fuel Filters (Body, Primary, Secondary)", "• Water Separator", "• Fuel Injection Pump", "• Fuel Injectors"]
+            },
+            {
+                emoji: "🔧",
+                title: "Fuel Supply System (Inline FIP)",
+                content: ["1. Fuel moves from tank to high-pressure pump", "2. High-pressure pump pushes fuel to injectors", "3. Excess fuel returns to the tank"]
+            },
+            {
+                emoji: "🚀",
+                title: "Common Rail Direct Injection (CRDI)",
+                content: ["• Uses a high-pressure pump to supply fuel", "• Improves fuel efficiency and reduces emissions"]
+            },
+            {
+                emoji: "💨",
+                title: "Turbochargers in Diesel Engines",
+                content: ["• Turbocharger with Wastegate - Prevents over-boost", "• Twin Scroll Turbo - Efficient exhaust gas usage", "• Variable Geometry Turbo - Adjusts airflow dynamically"]
+            }
+        ];
+
+        let currentIndex = 0;
+        const flashcard = document.querySelector('.flashcard');
+        const progressBar = document.querySelector('.progress');
+        const currentCardSpan = document.getElementById('currentCard');
+        const totalCardsSpan = document.getElementById('totalCards');
+
+        // Initialize total cards count
+        totalCardsSpan.textContent = flashcards.length;
+
+        function updateCard(index) {
+            const card = flashcards[index];
+            
+            // Update front of card
+            const front = flashcard.querySelector('.card-front');
+            front.querySelector('.emoji').textContent = card.emoji;
+            front.querySelector('.card-title').textContent = card.title;
+            
+            // Update back of card
+            const back = flashcard.querySelector('.card-back');
+            back.querySelector('.card-content').innerHTML = card.content.map(item => `<p>${item}</p>`).join('');
+            
+            // Update progress
+            currentCardSpan.textContent = index + 1;
+            progressBar.style.width = `${((index + 1) / flashcards.length) * 100}%`;
+        }
+
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                flashcard.classList.add('slide-out');
+                setTimeout(() => {
+                    currentIndex++;
+                    updateCard(currentIndex);
+                    flashcard.classList.remove('flipped');
+                    flashcard.classList.remove('slide-out');
+                    flashcard.classList.add('slide-in');
+                }, 300);
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                flashcard.classList.add('slide-out');
+                setTimeout(() => {
+                    currentIndex--;
+                    updateCard(currentIndex);
+                    flashcard.classList.remove('flipped');
+                    flashcard.classList.remove('slide-out');
+                    flashcard.classList.add('slide-in');
+                }, 300);
+            }
+        }
+
+        function shuffleCards() {
+            for (let i = flashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+            }
+            currentIndex = 0;
+            updateCard(currentIndex);
+            flashcard.classList.remove('flipped');
+        }
+
+        // Event Listeners
+        flashcard.addEventListener('click', () => {
+            flashcard.classList.toggle('flipped');
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', nextCard);
+        document.getElementById('prevBtn').addEventListener('click', previousCard);
+        document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextCard();
+            if (e.key === 'ArrowLeft') previousCard();
+            if (e.key === ' ') flashcard.classList.toggle('flipped');
+        });
+
+        // Touch swipe support
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        flashcard.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        flashcard.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchendX < touchstartX - swipeThreshold) nextCard();
+            if (touchendX > touchstartX + swipeThreshold) previousCard();
+        }
+
+        // Initialize first card
+        updateCard(currentIndex);
+    </script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Supply System in CI Engine - Interactive Study Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* New Color Scheme */
+            --primary: #2c5282;
+            --primary-light: #4299e1;
+            --primary-dark: #1a365d;
+            --success: #276749;
+            --success-light: #9ae6b4;
+            --danger: #c53030;
+            --danger-light: #feb2b2;
+            --warning: #c05621;
+            --warning-light: #fbd38d;
+            --info: #2b6cb0;
+            --info-light: #63b3ed;
+            --slate: #4a5568;
+            --slate-light: #a0aec0;
+            --indigo: #4c51bf;
+            --indigo-light: #7f9cf5;
+            
+            /* Background Colors */
+            --bg-primary: #f7fafc;
+            --bg-secondary: #edf2f7;
+            --bg-tertiary: #e2e8f0;
+            
+            /* Text Colors */
+            --text-primary: #1a202c;
+            --text-secondary: #2d3748;
+            --text-light: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-glance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Core Sections */
+        .core-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .core-section {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .overview {
+            background: linear-gradient(135deg, var(--slate-light), var(--slate));
+        }
+
+        .components {
+            background: linear-gradient(135deg, var(--indigo-light), var(--indigo));
+        }
+
+        .process {
+            background: linear-gradient(135deg, var(--info-light), var(--info));
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background: white;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .collapsible-header {
+            padding: 1.25rem;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible.active .collapsible-content {
+            padding: 1.5rem;
+            max-height: 2000px;
+        }
+
+        /* Flow Steps */
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            text-align: center;
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            flex: 1;
+            min-width: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Components Grid */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Memory Aid */
+        .memory-aid {
+            background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .memory-item {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Visual Guide */
+        .visual-guide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .diagram-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .core-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Quick Glance -->
+        <div class="header">
+            <h1>Fuel Supply System in CI Engine</h1>
+            <div class="quick-glance">
+                <h3><i class="fas fa-bolt"></i> Quick Glance</h3>
+                <p>The fuel supply system in CI engines ensures precise fuel delivery, proper atomization, and accurate timing for optimal combustion performance.</p>
+            </div>
+        </div>
+
+        <!-- Core Sections -->
+        <div class="collapsible active" id="core">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-star"></i> Core Concepts</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="core-sections">
+                    <div class="core-section overview">
+                        <h3><i class="fas fa-eye"></i> Overview</h3>
+                        <p>Only air enters during suction stroke, fuel injected at end of compression stroke</p>
+                    </div>
+                    <div class="core-section components">
+                        <h3><i class="fas fa-cogs"></i> Components</h3>
+                        <p>Consists of fuel tank, pumps, filters, injectors, and supply lines</p>
+                    </div>
+                    <div class="core-section process">
+                        <h3><i class="fas fa-sync"></i> Process</h3>
+                        <p>Ensures precise timing, atomization, and quantity control</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Components -->
+        <div class="collapsible" id="components">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-tools"></i> Main Components</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>Primary Components</h3>
+                        <ul>
+                            <li>Fuel tank</li>
+                            <li>Fuel pump</li>
+                            <li>Fuel line</li>
+                            <li>Fuel filters</li>
+                        </ul>
+                    </div>
+                    <div class="component-card">
+                        <h3>Advanced Components</h3>
+                        <ul>
+                            <li>Water separator</li>
+                            <li>Fuel injection pump</li>
+                            <li>High pressure pump (CRDI)</li>
+                            <li>EDC pump</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flow Process -->
+        <div class="collapsible" id="process">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-project-diagram"></i> System Layout</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="flow-steps">
+                    <div class="step">
+                        <i class="fas fa-gas-pump"></i>
+                        <h4>Fuel Storage</h4>
+                        <p>Fuel tank storage</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-filter"></i>
+                        <h4>Filtration</h4>
+                        <p>Multiple stage filtering</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h4>Pressurization</h4>
+                        <p>High-pressure pump operation</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-spray-can"></i>
+                        <h4>Injection</h4>
+                        <p>Precise fuel delivery</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Aid Section -->
+        <div class="collapsible" id="memory-aid">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-brain"></i> Memory Aid</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="memory-aid">
+                    <h3>FUEL-SYSTEM</h3>
+                    <div class="memory-items-container">
+                        <div class="memory-item">
+                            <div class="first-letter">F</div>
+                            <span>Filtration of contaminants</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">U</div>
+                            <span>Uniform distribution</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">E</div>
+                            <span>Efficient combustion</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">L</div>
+                            <span>Linear fuel flow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Guide -->
+        <div class="collapsible" id="visual">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-image"></i> Visual Guide</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="visual-guide">
+                    <div class="diagram-card">
+                        <h3>System Layout</h3>
+                        <img src="/api/placeholder/800/500" alt="Fuel System Layout">
+                        <p>CRDI Fuel System Components</p>
+                    </div>
+                    <div class="diagram-card">
+                        <h3>Flow Diagram</h3>
+                        <img src="/api/placeholder/800/500" alt="Fuel Flow Diagram">
+                        <p>Fuel Flow Process</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collapsible sections
+            document.querySelectorAll('.collapsible-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const section = header.parentElement;
+                    section.classList.toggle('active');
+                    const icon = header.querySelector('.fas.fa-chevron-down');
+                    icon.style.transform = section.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                });
+            });
+
+            // Toggle active state for all collapsible sections
+            const toggleAllSections = (action) => {
+                document.querySelectorAll('.collapsible').forEach(section => {
+                    if (action === 'expand') {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                    const icon = section.querySelector('.fas.fa-chevron-down');
+                    icon.style.transform = action === 'expand' ? 'rotate(180deg)' : 'rotate(0)';
+                });
+            };
+
+            // Add floating controls
+            const floatingControls = document.createElement('div');
+            floatingControls.className = 'floating-controls';
+            floatingControls.innerHTML = `
+                <div class="floating-btn" id="expand-all" title="Expand All Sections">
+                    <i class="fas fa-expand-alt"></i>
+                </div>
+                <div class="floating-btn" id="collapse-all" title="Collapse All Sections">
+                    <i class="fas fa-compress-alt"></i>
+                </div>
+                <div class="floating-btn" id="scroll-top" title="Scroll to Top">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+            `;
+            document.body.appendChild(floatingControls);
+
+            // Style floating controls
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                .floating-controls {
+                    position: fixed;
+                    right: 1rem;
+                    top: 1rem;
+                    display: flex;
+                    gap: 0.5rem;
+                    z-index: 1000;
+                }
+                .floating-btn {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: var(--primary);
+                    color: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                    transition: all 0.3s ease;
+                }
+                .floating-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                }
+                #scroll-top {
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.3s ease;
+                }
+                #scroll-top.visible {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+            // Add event listeners for floating controls
+            document.getElementById('expand-all').addEventListener('click', () => toggleAllSections('expand'));
+            document.getElementById('collapse-all').addEventListener('click', () => toggleAllSections('collapse'));
+            
+            // Scroll to top functionality
+            const scrollTopBtn = document.getElementById('scroll-top');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Make diagrams expandable
+            const diagramImages = document.querySelectorAll('.diagram-card img');
+            diagramImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    const modal = document.createElement('div');
+                    modal.className = 'modal';
+                    modal.innerHTML = `
+                        <div class="modal-content">
+                            <img src="${img.src}" alt="${img.alt}">
+                            <button class="close-modal">&times;</button>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+
+                    // Add modal styles
+                    const modalStyles = document.createElement('style');
+                    modalStyles.textContent = `
+                        .modal {
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0, 0, 0, 0.8);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            z-index: 1100;
+                        }
+                        .modal-content {
+                            position: relative;
+                            max-width: 90%;
+                            max-height: 90vh;
+                        }
+                        .modal-content img {
+                            max-width: 100%;
+                            max-height: 90vh;
+                            object-fit: contain;
+                        }
+                        .close-modal {
+                            position: absolute;
+                            top: -2rem;
+                            right: -2rem;
+                            background: white;
+                            border: none;
+                            border-radius: 50%;
+                            width: 30px;
+                            height: 30px;
+                            cursor: pointer;
+                        }
+                    `;
+                    document.head.appendChild(modalStyles);
+
+                    // Close modal functionality
+                    const closeBtn = modal.querySelector('.close-modal');
+                    const closeModal = () => {
+                        modal.remove();
+                        modalStyles.remove();
+                    };
+
+                    closeBtn.addEventListener('click', closeModal);
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) closeModal();
+                    });
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') closeModal();
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
