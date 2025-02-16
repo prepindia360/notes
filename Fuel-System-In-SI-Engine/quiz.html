@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Supply System - Fill in the Blanks Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #2563EB;
+            --primary-light: #60A5FA;
+            --primary-dark: #1D4ED8;
+            --accent: #F472B6;
+            --success: #059669;
+            --bg-primary: #F8FAFC;
+            --bg-secondary: #F1F5F9;
+            --text-primary: #1E293B;
+            --text-secondary: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 1rem;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Question Styles */
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: var(--bg-secondary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.25rem;
+            background: white;
+            border: 2px dashed var(--primary-light);
+            border-radius: 0.25rem;
+            text-align: center;
+        }
+
+        /* Answer Section */
+        .answer-section {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .show-answer-btn {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .show-answer-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .answer {
+            display: none;
+            color: var(--success);
+            font-weight: 500;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .answer.visible {
+            display: block;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 2rem 0;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .quiz-container {
+                padding: 1rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fill in the Blanks Quiz</h1>
+            <p>Test your knowledge of the Fuel Supply System in SI Engine</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-text">
+                <span>Progress</span>
+                <span id="progress-status">0/15 Answered</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <div class="question-list" id="question-list">
+                <!-- Questions will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "The fuel supply system in an SI engine is responsible for _____, _____, and delivering fuel to the combustion chamber.",
+                answer: "filtration, atomization"
+            },
+            {
+                text: "In a petrol engine, the combustible fuel mixture is prepared _____ the combustion chamber.",
+                answer: "outside"
+            },
+            {
+                text: "The device that maintains the air-fuel ratio in a petrol engine is called a _____.",
+                answer: "carburetor"
+            },
+            {
+                text: "The engine requires a _____ mixture while starting and a _____ mixture during normal running conditions.",
+                answer: "rich, leaner"
+            },
+            {
+                text: "The fuel pump delivers fuel from the _____ to the _____ attached to the carburetor.",
+                answer: "fuel tank, float chamber"
+            },
+            {
+                text: "The fuel pump maintains _____ pressure in the carburetor.",
+                answer: "constant"
+            },
+            {
+                text: "After mixing with air, the fuel enters the _____ for combustion.",
+                answer: "combustion chamber"
+            },
+            {
+                text: "The process of breaking fuel into fine particles before combustion is called _____.",
+                answer: "atomization"
+            },
+            {
+                text: "A _____ is used to remove impurities from fuel before it reaches the engine.",
+                answer: "fuel filter"
+            },
+            {
+                text: "The two types of fuel supply systems commonly used in SI engines are _____ and _____.",
+                answer: "carburetor-based system, MPFI (Multi-Point Fuel Injection) system"
+            },
+            {
+                text: "The carburetor ensures that the correct _____ ratio is maintained for efficient engine performance.",
+                answer: "air-fuel"
+            },
+            {
+                text: "The fuel injector is used in _____ systems instead of a carburetor.",
+                answer: "MPFI (Multi-Point Fuel Injection)"
+            },
+            {
+                text: "Proper atomization of fuel ensures _____ combustion and reduces fuel wastage.",
+                answer: "complete"
+            },
+            {
+                text: "The main components of a fuel supply system include _____, _____, and _____.",
+                answer: "fuel tank, fuel pump, fuel filters"
+            },
+            {
+                text: "In an SI engine, the air-fuel ratio depends on various _____ conditions.",
+                answer: "engine"
+            }
+        ];
+
+        let answeredCount = 0;
+
+        function createQuestionCards() {
+            const questionList = document.getElementById('question-list');
+            
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.innerHTML = `${index + 1}. ${q.text}`;
+                
+                const answerSection = document.createElement('div');
+                answerSection.className = 'answer-section';
+                
+                const button = document.createElement('button');
+                button.className = 'show-answer-btn';
+                button.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                
+                const answer = document.createElement('div');
+                answer.className = 'answer';
+                answer.textContent = q.answer;
+                
+                button.addEventListener('click', () => {
+                    if (!answer.classList.contains('visible')) {
+                        answeredCount++;
+                        updateProgress();
+                    }
+                    answer.classList.toggle('visible');
+                    button.innerHTML = answer.classList.contains('visible') ? 
+                        '<i class="fas fa-eye-slash"></i> Hide Answer' : 
+                        '<i class="fas fa-eye"></i> Show Answer';
+                });
+                
+                answerSection.appendChild(button);
+                answerSection.appendChild(answer);
+                
+                card.appendChild(questionText);
+                card.appendChild(answerSection);
+                
+                questionList.appendChild(card);
+            });
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progressStatus = document.getElementById('progress-status');
+            const progress = (answeredCount / questions.length) * 100;
+            
+            progressBar.style.width = `${progress}%`;
+            progressStatus.textContent = `${answeredCount}/${questions.length} Answered`;
+        }
+
+        // Initialize the quiz
+        createQuestionCards();
+        updateProgress();
+    </script>
+</body>
+</html>
