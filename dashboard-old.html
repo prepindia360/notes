@@ -1,0 +1,160 @@
+// Clear main content and add iframe
+            mainContent.innerHTML = '';
+            mainContent.appendChild(iframe);
+
+            // Reset progress bar
+            resetProgress();
+
+            // Start progress tracking
+            trackProgress();
+
+            // Handle mobile view
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        // Show not found page
+        function showNotFound() {
+            mainContent.innerHTML = `
+                <div class="not-found">
+                    <i class="fas fa-tools development-icon"></i>
+                    <h2>Page Under Development</h2>
+                    <p>We're working hard to create amazing content for this topic! Check back soon for updates.</p>
+                    <p>In the meantime, try exploring our other available topics and learning modes.</p>
+                    <div style="margin-top: 2rem;">
+                        <i class="fas fa-code fa-2x" style="margin: 0 1rem;"></i>
+                        <i class="fas fa-paint-brush fa-2x" style="margin: 0 1rem;"></i>
+                        <i class="fas fa-cogs fa-2x" style="margin: 0 1rem;"></i>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('hidden');
+            sidebarToggle.classList.toggle('hidden');
+            mainContent.classList.toggle('full-width');
+            progressContainer.classList.toggle('full-width');
+        }
+
+        // Progress tracking
+        function resetProgress() {
+            progressBar.style.width = '0%';
+        }
+
+        function trackProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                if (progress <= 100) {
+                    progressBar.style.width = `${progress}%`;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        // Logout handler
+        function handleLogout() {
+            // Add a smooth fade-out animation
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            // Clear session and redirect after animation
+            setTimeout(() => {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }, 500);
+        }
+
+        // Mode handling
+        function handleModeChange(newMode) {
+            currentMode = newMode;
+            
+            // Update active button
+            modeBtns.forEach(btn => {
+                if (btn.dataset.mode === newMode) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Reload current content if iframe exists
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                const currentTopic = iframe.src.split('/')[0];
+                loadContent(currentTopic, newMode);
+            }
+        }
+
+        // Add keyboard shortcuts
+        function handleKeyboardShortcuts(e) {
+            // Toggle sidebar with Ctrl + B
+            if (e.ctrlKey && e.key === 'b') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+
+            // Switch modes with Ctrl + number
+            if (e.ctrlKey && !isNaN(e.key) && e.key !== ' ') {
+                const index = parseInt(e.key) - 1;
+                const modes = ['read', 'flashcard', 'quiz'];
+                if (modes[index]) {
+                    handleModeChange(modes[index]);
+                }
+            }
+        }
+
+        // Save user preferences
+        function savePreferences() {
+            const preferences = {
+                mode: currentMode,
+                sidebarHidden: sidebar.classList.contains('hidden')
+            };
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+        }
+
+        // Load user preferences
+        function loadPreferences() {
+            const preferences = JSON.parse(localStorage.getItem('userPreferences'));
+            if (preferences) {
+                if (preferences.mode !== currentMode) {
+                    handleModeChange(preferences.mode);
+                }
+                if (preferences.sidebarHidden) {
+                    toggleSidebar();
+                }
+            }
+        }
+
+        // Handle window resize
+        function handleResize() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('hidden');
+                mainContent.classList.add('full-width');
+                progressContainer.classList.add('full-width');
+            }
+        }
+
+        // Event Listeners
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        topicsList.addEventListener('click', handleTopicClick);
+        document.addEventListener('keydown', handleKeyboardShortcuts);
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('beforeunload', savePreferences);
+
+        modeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                handleModeChange(btn.dataset.mode);
+            });
+        });
+
+        // Initialize
+        initializeTopics();
+        loadPreferences();
+    </script>
+</body>
+</html>
