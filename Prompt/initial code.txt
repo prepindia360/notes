@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbocharger - Interactive Study Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+             :root {
+            /* Core Colors */
+            --primary: #2563eb;
+            --primary-light: #60a5fa;
+            --primary-dark: #1d4ed8;
+            --success: #059669;
+            --success-light: #86efac;
+            --danger: #dc2626;
+            --danger-light: #fca5a5;
+            --warning: #d97706;
+            --warning-light: #fcd34d;
+            --info: #0284c7;
+            --info-light: #67e8f9;
+            --purple: #7c3aed;
+            --purple-light: #c4b5fd;
+            --orange: #ea580c;
+            --orange-light: #fdba74;
+            --teal: #0d9488;
+            --teal-light: #5eead4;
+
+            /* Background Colors */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-tertiary: #e2e8f0;
+
+            /* Text Colors */
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-light: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-glance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Core Sections */
+        .core-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .core-section {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .role {
+            background: linear-gradient(135deg, var(--purple-light), var(--purple));
+        }
+
+        .placement {
+            background: linear-gradient(135deg, var(--orange-light), var(--orange));
+        }
+
+        .purpose {
+            background: linear-gradient(135deg, var(--teal-light), var(--teal));
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background: white;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .collapsible-header {
+            padding: 1.25rem;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .collapsible-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible.active .collapsible-content {
+            padding: 1.5rem;
+            max-height: 2000px;
+        }
+
+        /* Flow Steps */
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            text-align: center;
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            flex: 1;
+            min-width: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Components */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Memory Aid */
+        .memory-aid {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-aid h3 {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .memory-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .memory-item {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .memory-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .first-letter {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Advantages & Limitations */
+        .pros-cons-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .pros, .cons {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .pros {
+            background: linear-gradient(135deg, var(--success-light), white);
+        }
+
+        .cons {
+            background: linear-gradient(135deg, var(--danger-light), white);
+        }
+
+        /* Visual Guide */
+        .visual-guide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .diagram-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .diagram-card img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1100;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -2rem;
+            right: -2rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        /* Technical Details */
+        .tech-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-card {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-card.turbo-lag {
+            background: linear-gradient(135deg, var(--warning-light), white);
+        }
+
+        .tech-card.wastegate {
+            background: linear-gradient(135deg, var(--info-light), white);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .tech-card p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .tech-card ul {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .tech-card ul li {
+            position: relative;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .tech-card ul li:before {
+            content: "•";
+            position: absolute;
+            left: -1rem;
+            color: var(--primary);
+        }
+
+        /* Key Points Section */
+        .key-points-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+        }
+
+        .key-points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .key-point-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .key-point-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .key-point-card i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Floating Controls */
+        .floating-controls {
+            position: fixed;
+            right: 1rem;
+            top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1000;
+        }
+
+        .floating-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Quick Reference */
+        .quick-ref {
+            position: fixed;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .quick-ref.hidden {
+            transform: translateY(-50%) translateX(110%);
+        }
+
+        /* Scroll to Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        /* Learning Tips */
+        .learning-tips {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tip-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .core-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .pros-cons-section {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-ref {
+                width: 200px;
+            }
+
+            .visual-guide {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .key-points-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Controls -->
+    <div class="floating-controls">
+        <div class="floating-btn" id="toggle-topics" title="Toggle Topics Menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="floating-btn" id="toggle-quick" title="Toggle Quick Reference">
+            <i class="fas fa-list"></i>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div class="container">
+        <!-- Header with Quick Glance -->
+        <div class="header">
+            <h1>Turbocharger <span style="font-size: 1rem;">(10 Marks)</span></h1>
+            <div class="quick-glance">
+                <h3><i class="fas fa-bolt"></i> Quick Glance</h3>
+                <p>Uses exhaust gases to drive a turbine, increasing air intake and improving engine efficiency. 
+                   The turbocharger harnesses typically wasted exhaust energy to boost engine performance and reduce emissions.</p>
+            </div>
+        </div>
+
+        <!-- Core Sections -->
+        <div class="collapsible" id="core">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-star"></i> Core Concepts</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="core-sections">
+                    <div class="core-section role">
+                        <h3><i class="fas fa-cog"></i> Role</h3>
+                        <p>Boosts engine power through increased air supply, enhancing combustion efficiency.</p>
+                    </div>
+                    <div class="core-section placement">
+                        <h3><i class="fas fa-map-marker-alt"></i> Placement</h3>
+                        <p>Mounted on exhaust manifold for optimal utilization of exhaust gases.</p>
+                    </div>
+                    <div class="core-section purpose">
+                        <h3><i class="fas fa-bullseye"></i> Purpose</h3>
+                        <p>Enhances engine efficiency and reduces emissions while providing higher torque.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Working Process -->
+        <div class="collapsible" id="working">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-sync-alt"></i> Working Process</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="flow-steps">
+                    <div class="step">
+                        <i class="fas fa-fire"></i>
+                        <h4>Exhaust Flow</h4>
+                        <p>Exhaust gases enter turbine</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-wind"></i>
+                        <h4>Turbine Rotation</h4>
+                        <p>Turbine wheel spins</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h4>Compression</h4>
+                        <p>Air is compressed</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-fan"></i>
+                        <h4>Air Intake</h4>
+                        <p>Compressed air enters engine</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h4>Power Output</h4>
+                        <p>Enhanced engine performance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Components -->
+        <div class="collapsible" id="components">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-tools"></i> Components</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>Core Components</h3>
+                        <ul>
+                            <li>Turbine wheel with shaft</li>
+                            <li>Compressor wheel</li>
+                            <li>Central housing</li>
+                            <li>Heat shield plate</li>
+                        </ul>
+                    </div>
+                    <div class="component-card">
+                        <h3>Support Components</h3>
+                        <ul>
+                            <li>Oil rings & deflector</li>
+                            <li>Wastegate mechanism</li>
+                            <li>Actuator assembly</li>
+                            <li>Bushes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advantages & Limitations Section -->
+        <div class="collapsible" id="pros-cons">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-balance-scale"></i> Advantages & Limitations</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="pros-cons-section">
+                    <div class="pros">
+                        <h3><i class="fas fa-plus-circle"></i> Advantages</h3>
+                        <ul>
+                            <li>Increased horsepower & torque</li>
+                            <li>Better fuel efficiency</li>
+                            <li>Reduced emissions</li>
+                            <li>Improved high-altitude performance</li>
+                            <li>No direct engine power loss</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3><i class="fas fa-minus-circle"></i> Limitations</h3>
+                        <ul>
+                            <li>Turbo lag</li>
+                            <li>Complex maintenance</li>
+                            <li>Heat management issues</li>
+                            <li>Higher initial cost</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Aid Section -->
+        <div class="collapsible" id="memory-aid">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-brain"></i> Memory Aid</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="memory-aid">
+                    <h3>TURBO-MASTER</h3>
+                    <div class="memory-items-container">
+                        <div class="memory-item">
+                            <div class="first-letter">T</div>
+                            <span class="memory-text">urbine-driven system</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">U</div>
+                            <span class="memory-text">tilizes exhaust energy</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">R</div>
+                            <span class="memory-text">otating components</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">B</div>
+                            <span class="memory-text">oost pressure control</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">O</div>
+                            <span class="memory-text">ptimized performance</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">M</div>
+                            <span class="memory-text">aximum efficiency</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">A</div>
+                            <span class="memory-text">ir compression</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">S</div>
+                            <span class="memory-text">ystem integration</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">T</div>
+                            <span class="memory-text">emperature management</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">E</div>
+                            <span class="memory-text">missions reduction</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">R</div>
+                            <span class="memory-text">eliable operation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Guide Section -->
+        <div class="collapsible" id="visual">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-image"></i> Visual Guide</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="visual-guide">
+                    <div class="diagram-card">
+                        <h3>Turbocharger Components</h3>
+                        <img src="/api/placeholder/800/500" alt="Turbocharger Components" data-full="/api/placeholder/1200/800">
+                        <p>Click to enlarge</p>
+                    </div>
+                    <div class="diagram-card">
+                        <h3>Working Process</h3>
+                        <img src="/api/placeholder/800/500" alt="Turbocharger Working Process" data-full="/api/placeholder/1200/800">
+                        <p>Click to enlarge</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details Section -->
+        <div class="collapsible" id="technical">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-microchip"></i> Technical Details</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="tech-details-grid">
+                    <div class="tech-card turbo-lag">
+                        <h3><i class="fas fa-clock"></i> Turbo Lag</h3>
+                        <p>Delay in power delivery due to the time needed for exhaust gases to spool up the turbine to effective boost levels.</p>
+                        <ul>
+                            <li>Most noticeable at low RPM</li>
+                            <li>Affects initial acceleration</li>
+                            <li>Can be minimized with modern designs</li>
+                        </ul>
+                    </div>
+                    <div class="tech-card wastegate">
+                        <h3><i class="fas fa-valve"></i> Wastegate</h3>
+                        <p>Control mechanism that regulates maximum boost pressure by redirecting excess exhaust gases.</p>
+                        <ul>
+                            <li>Prevents over-boosting</li>
+                            <li>Protects engine components</li>
+                            <li>Ensures optimal performance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Key Points Section -->
+                <div class="key-points-section">
+                    <h3><i class="fas fa-key"></i> Key Points to Remember</h3>
+                    <div class="key-points-grid">
+                        <div class="key-point-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <p>Boost pressure directly affects engine performance</p>
+                        </div>
+                        <div class="key-point-card">
+                            <i class="fas fa-temperature-high"></i>
+                            <p>Intercooling is crucial for maintaining air density</p>
+                        </div>
+                        <div class="key-point-card">
+                            <i class="fas fa-oil-can"></i>
+                            <p>Regular oil maintenance is essential</p>
+                        </div>
+                        <div class="key-point-card">
+                            <i class="fas fa-balance-scale"></i>
+                            <p>Wastegate ensures balanced boost levels</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference Panel -->
+        <div class="quick-ref hidden">
+            <h3>Quick Review</h3>
+            <ul>
+                <li>Exhaust-driven boost system</li>
+                <li>Increases air intake</li>
+                <li>Improves power output</li>
+                <li>Reduces emissions</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <img src="" alt="Enlarged Image">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collapsible sections
+            document.querySelectorAll('.collapsible-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const section = header.parentElement;
+                    section.classList.toggle('active');
+                    const icon = header.querySelector('.fas.fa-chevron-down');
+                    icon.style.transform = section.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                });
+            });
+
+            // Floating controls
+            const quickRef = document.querySelector('.quick-ref');
+            const toggleQuickBtn = document.getElementById('toggle-quick');
+            
+            toggleQuickBtn.addEventListener('click', () => {
+                quickRef.classList.toggle('hidden');
+            });
+
+            // Scroll to Top functionality
+            const scrollTopBtn = document.getElementById('scrollTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.classList.add('visible');
+                } else {
+                    scrollTopBtn.classList.remove('visible');
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Image Modal functionality
+            const modal = document.getElementById('imageModal');
+            const modalImg = modal.querySelector('img');
+            const closeBtn = modal.querySelector('.close-modal');
+
+            document.querySelectorAll('.diagram-card img').forEach(img => {
+                img.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    modalImg.src = img.dataset.full;
+                    modalImg.alt = img.alt;
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Close modal on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

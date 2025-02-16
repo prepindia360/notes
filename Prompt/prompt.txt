@@ -1,0 +1,67 @@
+Initial Request:
+"I want to create an interactive study guide similar to the turbocharger one, but for [{TOPIC NAME}]. Please maintain the same level of interactivity and visual appeal but with a different color scheme. Here's what I'm providing:"
+Reference Materials:
+
+
+"Here's the code for the turbocharger guide for reference: [PASTED_CODE]"
+"Here's a screenshot of how it looks: [SCREENSHOT 1][screenshot2]"
+"Here's the content for [{Topic Name}]: [CONTENT GOES BELOW]"
+
+---------------------------------CONTENT --------------------
+
+
+----------------contnet ends--------------
+
+
+
+Specific Requirements:
+"Please include:
+
+
+All interactive features (expanding sections, scroll to top, quick review)
+Image section with modal view capability
+Memory aid section
+A different but eye-friendly color scheme
+Mobile responsiveness
+Student-friendly learning features"
+
+
+Content Organization:
+"For the content, please organize it into these key areas:
+
+
+Quick glance overview
+Core concepts
+Working mechanism
+Components/Parts
+Technical details
+Key points to remember
+Visual aids
+Feel free to modify section names based on the topic's requirements."
+
+
+NOTES :
+ALSO INCLUDE OTHER KEY ASPECTS, WORKING , AND OTHER IMPORTANT  TOPICS
+
+YOU CAN INCLUDE THESE ALL CHARTING TECHINQUES FOR ANY SUB TOPIC WHICH YOU LIKE
+1. Radial Diagram (Spoke Diagram)
+A circle in the center representing the engine, with multiple branches (lines) extending outward to smaller circles or labels for each component (e.g., piston, crankshaft, valves).
+Good for showing parts in relation to the main system.
+2. Hierarchical Tree Diagram
+A top-down or left-right structure, with the engine at the top or left, branching into different subsystems (e.g., fuel system, cooling system, transmission).
+Best for showing subdivisions of engine components.
+3. Mind Map
+The engine in the center, branching into major sections like the combustion system, lubrication system, etc. Each branch further divides into specific parts.
+Great for brainstorming or breaking down complex structures.
+4. Exploded View Diagram
+A 3D or 2D diagram where all components are shown slightly separated but in alignment, so you can see how parts fit together.
+Used in technical manuals and engineering drawings.
+5. Sankey Diagram
+A flow-based diagram where the engine is at one end, and components are represented as arrows flowing from it, showing how different parts interact.
+Good for showing energy or process flow.
+6. Cluster Diagram
+Similar to a bubble chart, where the engine is at the center, and different parts are represented as connected bubbles.
+Best for grouping related components together.
+7. Fishbone Diagram (Ishikawa Diagram)
+A horizontal line as the engine's main structure, with diagonal branches representing major sections (e.g., ignition, cooling, fuel), and each branch further splitting into smaller parts.
+Great for cause-and-effect analysis or structured breakdowns.
