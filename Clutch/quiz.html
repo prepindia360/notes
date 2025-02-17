@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutch - Fill in the Blanks Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ddd6fe;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .quiz-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .question {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .blanks {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+
+        .answer-section {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .show-answer {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .show-answer:hover {
+            background: var(--primary-dark);
+        }
+
+        .answer {
+            display: none;
+            padding: 1rem;
+            background: var(--success-light);
+            border-radius: 0.5rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .answer.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .question {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Clutch System: Fill in the Blanks</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>20 Questions</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Click "Show Answer" to reveal</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quiz">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "A clutch is a device used to ______ and ______ the engine from the transmission.",
+                answer: "engage, disengage"
+            },
+            {
+                question: "The clutch operates on the principle of ______ between two surfaces.",
+                answer: "friction"
+            },
+            {
+                question: "When the clutch pedal is pressed, the clutch ______ from the gearbox and stops power transmission.",
+                answer: "disengages"
+            },
+            {
+                question: "The three factors affecting friction in a clutch are ______, ______, and ______.",
+                answer: "surface area, applied pressure, coefficient of friction"
+            },
+            {
+                question: "A ______ clutch engages abruptly and does not allow slippage.",
+                answer: "positive"
+            },
+            {
+                question: "The main purpose of a clutch is to allow smooth ______ and ______ of power transmission.",
+                answer: "engagement, disengagement"
+            },
+            {
+                question: "The clutch disc contains several components, including the hub flange, ______ springs, ______ ring, and friction material.",
+                answer: "torsional, friction"
+            },
+            {
+                question: "Sprung clutches are preferred for ______ use, while un-sprung clutches are preferred for ______ applications.",
+                answer: "street, racing"
+            },
+            {
+                question: "The clutch disengages when the driver ______ the clutch pedal and engages when the pedal is ______.",
+                answer: "presses, released"
+            },
+            {
+                question: "In a clutch system, one friction surface is connected to the ______, and the other is connected to the ______ system.",
+                answer: "engine, transmission"
+            },
+            {
+                question: "The two main types of clutches are ______ and ______ clutches.",
+                answer: "friction, positive"
+            },
+            {
+                question: "A ______ clutch uses fluid to transmit torque instead of direct contact between surfaces.",
+                answer: "fluid flywheel or torque converter"
+            },
+            {
+                question: "The clutch helps in reducing wear on ______ by allowing smooth gear shifting.",
+                answer: "gears"
+            },
+            {
+                question: "The purpose of torsional springs in a clutch is to ______ vibrations and smooth out ______.",
+                answer: "dampen, engagement"
+            },
+            {
+                question: "When the clutch is ______, power from the engine is transmitted to the gearbox and then to the wheels.",
+                answer: "engaged"
+            },
+            {
+                question: "The main function of a clutch is to cut power supply from the ______ to the ______ when required.",
+                answer: "engine, gearbox"
+            },
+            {
+                question: "A ______ clutch engages smoothly over time, while a ______ clutch locks immediately.",
+                answer: "gradual engagement, positive"
+            },
+            {
+                question: "Clutch actuation refers to the process of transferring power from the ______ to the ______ and then to the wheels.",
+                answer: "engine, gearbox"
+            },
+            {
+                question: "The ______ clutch is widely used in cars and motorcycles because it provides smooth power transmission.",
+                answer: "friction"
+            },
+            {
+                question: "The ______ clutch engages automatically at higher speeds using centrifugal force.",
+                answer: "centrifugal"
+            }
+        ];
+
+        const quizContainer = document.getElementById('quiz');
+
+        // Create question cards
+        questions.forEach((q, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            // Replace blanks with underlined spaces
+            const questionText = q.question.replace(/______/g, '<span class="blanks">______</span>');
+            
+            card.innerHTML = `
+                <div class="question">
+                    <span class="question-number">${index + 1}.</span>
+                    ${questionText}
+                </div>
+                <div class="answer-section">
+                    <button class="show-answer" onclick="toggleAnswer(${index})">
+                        <i class="fas fa-eye"></i>
+                        Show Answer
+                    </button>
+                    <div class="answer" id="answer-${index}">
+                        <i class="fas fa-check-circle"></i>
+                        ${q.answer}
+                    </div>
+                </div>
+            `;
+            
+            quizContainer.appendChild(card);
+        });
+
+        // Toggle answer visibility
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            answer.classList.toggle('visible');
+            
+            const button = answer.previousElementSibling;
+            if (answer.classList.contains('visible')) {
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+            } else {
+                button.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+            }
+        }
+    </script>
+</body>
+</html>

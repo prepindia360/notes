@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction Clutch Flashcards</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #3b82f6;
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .controls {
+            background: white;
+            padding: 0.75rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #3b82f6;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn.accent {
+            background: #f59e0b;
+        }
+
+        .btn.accent:hover {
+            background: #d97706;
+        }
+
+        .btn.secondary {
+            background: #64748b;
+        }
+
+        .btn.secondary:hover {
+            background: #475569;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            min-height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            min-height: 300px;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            min-height: 300px;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-radius: 1rem;
+        }
+
+        .card-back {
+            background: white;
+            color: #1e293b;
+            transform: rotateY(180deg);
+            border-radius: 1rem;
+            border: 2px solid #3b82f6;
+        }
+
+        .card-number {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-question {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .card-answer {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            padding: 1rem;
+            text-align: center;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 300px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #22c55e;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .controls {
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                flex: 1;
+                min-width: calc(50% - 0.25rem);
+                justify-content: center;
+            }
+
+            .card {
+                min-height: 250px;
+            }
+
+            .card-face {
+                min-height: 250px;
+                padding: 1rem;
+            }
+
+            .card-question {
+                font-size: 1rem;
+            }
+
+            .card-answer {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Friction Clutch Flashcards</h1>
+        <p>Master the concepts of friction clutch mechanism through interactive flashcards</p>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="prevBtn">
+            <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="btn accent" id="flipBtn">
+            <i class="fas fa-sync"></i> Flip
+        </button>
+        <button class="btn" id="nextBtn">
+            Next <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="btn secondary" id="shuffleBtn">
+            <i class="fas fa-random"></i> Shuffle
+        </button>
+    </div>
+
+    <div class="main-container">
+        <div class="card" id="flashcard">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <span class="card-number">Card 1/12</span>
+                    <i class="fas fa-cogs card-icon"></i>
+                    <div class="card-question"></div>
+                    <p>Tap to flip</p>
+                </div>
+                <div class="card-face card-back">
+                    <span class="card-number">Card 1/12</span>
+                    <div class="card-answer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-text">
+            Card <span id="currentCard">1</span> of <span id="totalCards">12</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+
+    <script>
+        const flashcardsData = [
+            {
+                question: "What is the main principle on which a friction clutch operates?",
+                answer: "It operates based on frictional force between the driving and driven members when they are pressed together.",
+                icon: "fa-cogs"
+            },
+            {
+                question: "What happens when the force pressing the driving and driven members together increases?",
+                answer: "The frictional force increases, allowing the driven member to rotate at the same speed as the driving member.",
+                icon: "fa-compress-arrows-alt"
+            },
+            {
+                question: "What is the purpose of a friction clutch in a vehicle?",
+                answer: "It allows smooth engagement and disengagement of power transmission from the engine to the gearbox.",
+                icon: "fa-car"
+            },
+            {
+                question: "What is 'clutch control' and when is it used?",
+                answer: "Clutch control is the partial engagement of the clutch (pedal halfway up) to allow slow movement, used in maneuvers and starting from rest.",
+                icon: "fa-tachometer-alt"
+            },
+            {
+                question: "What happens when the clutch pedal is fully pressed?",
+                answer: "The clutch disengages, cutting power from the engine to the gearbox.",
+                icon: "fa-power-off"
+            },
+            {
+                question: "What keeps the friction plate clamped between the flywheel and pressure plate?",
+                answer: "Spring force.",
+                icon: "fa-compress"
+            },
+            {
+                question: "What is the function of the diaphragm spring in a friction clutch?",
+                answer: "It presses the pressure plate against the friction plate to engage the clutch.",
+                icon: "fa-circle"
+            },
+            {
+                question: "What component transmits pressure from the clutch pedal to pull back the pressure plate?",
+                answer: "Thrust pad (release bearing).",
+                icon: "fa-arrows-alt"
+            },
+            {
+                question: "Why does the driven member not rotate immediately at the same speed as the driving member?",
+                answer: "Initially, the frictional force is small, but as pressure increases, the resistance is overcome, and the driven member reaches the same speed.",
+                icon: "fa-clock"
+            },
+            {
+                question: "What is the role of the pressure plate in a friction clutch?",
+                answer: "It presses the friction plate against the flywheel to engage the clutch.",
+                icon: "fa-shield-alt"
+            },
+            {
+                question: "What happens when the clutch is engaged?",
+                answer: "Power from the engine is transmitted to the gearbox and then to the wheels.",
+                icon: "fa-sync"
+            },
+            {
+                question: "What are the main components of a friction clutch?",
+                answer: "Flywheel, clutch plate (friction plate), pressure plate, diaphragm spring, release bearing, and thrust pad.",
+                icon: "fa-tools"
+            }
+        ];
+
+        let currentIndex = 0;
+        const card = document.getElementById('flashcard');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const flipBtn = document.getElementById('flipBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const progressBar = document.getElementById('progress');
+        const currentCardSpan = document.getElementById('currentCard');
+        const totalCardsSpan = document.getElementById('totalCards');
+
+        function updateCard() {
+            const data = flashcardsData[currentIndex];
+            const cardNumbers = document.querySelectorAll('.card-number');
+            const questionEl = document.querySelector('.card-question');
+            const answerEl = document.querySelector('.card-answer');
+            const iconEl = document.querySelector('.card-icon');
+
+            cardNumbers.forEach(el => {
+                el.textContent = `Card ${currentIndex + 1}/${flashcardsData.length}`;
+            });
+            questionEl.textContent = data.question;
+            answerEl.textContent = data.answer;
+            iconEl.className = `fas ${data.icon} card-icon`;
+
+            // Update progress
+            const progress = ((currentIndex + 1) / flashcardsData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            currentCardSpan.textContent = currentIndex + 1;
+            totalCardsSpan.textContent = flashcardsData.length;
+
+            // Reset card flip
+            card.classList.remove('flipped');
+        }
+
+        function shuffleCards() {
+            for (let i = flashcardsData.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [flashcardsData[i], flashcardsData[j]] = [flashcardsData[j], flashcardsData[i]];
+            }
+            currentIndex = 0;
+            updateCard();
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < flashcardsData.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        });
+
+        flipBtn.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+
+        card.addEventListener('click', () => {
+            card.classList.toggle('flipped');
+        });
+
+        shuffleBtn.addEventListener('click', shuffleCards);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    prevBtn.click();
+                    break;
+                case 'ArrowRight':
+                    nextBtn.click();
+                    break;
+                case ' ':
+                    flipBtn.click();
+                    e.preventDefault();
+                    break;
+            }
+        });
+
+        // Initialize
+        updateCard();
+    </script>
+</body>
+</html>

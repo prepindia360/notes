@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutch Systems Study Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background: #f0f2f5;
+        }
+
+        .tab.active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Content Blocks */
+        .content-block {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .quick-glance {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            padding: 30px;
+        }
+
+        /* Headers */
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #34495e;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        /* Cards */
+        .card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Working Process */
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: "→";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4a90e2;
+            font-size: 20px;
+        }
+
+        /* Image Sections */
+        .image-section {
+            margin: 20px 0;
+        }
+
+        .image-container {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .image-caption {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        /* Technical Details */
+        .tech-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .tech-details ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .tech-details ul li {
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .tech-details ul li::before {
+            content: "•";
+            color: #4a90e2;
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+
+        /* Advantages & Limitations */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .advantages, .limitations {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .advantages {
+            background: #e8f5e9;
+        }
+
+        .limitations {
+            background: #fbe9e7;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            background: none;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                flex-direction: column;
+            }
+
+            .step:not(:last-child)::after {
+                content: "↓";
+                right: 50%;
+                bottom: -20px;
+                top: auto;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="diaphragm">Diaphragm Clutch</div>
+            <div class="tab" data-tab="hydraulic">Hydraulic Clutch</div>
+            <div class="tab" data-tab="multicoil">Multi-Coil Clutch</div>
+        </div>
+
+        <!-- Diaphragm Clutch Section -->
+        <section id="diaphragm" class="section active">
+            <!-- Quick Glance -->
+            <div class="content-block quick-glance">
+                <h2><i class="fas fa-bolt"></i> Quick Glance</h2>
+                <p>A modern clutch design utilizing a cone-shaped diaphragm spring for efficient and consistent pressure distribution, revolutionizing vehicle clutch systems with its innovative single-spring technology.</p>
+            </div>
+
+            <!-- Core Concepts -->
+            <div class="content-block">
+                <h2><i class="fas fa-brain"></i> Core Concepts</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Role</h3>
+                        <p>Provides uniform pressure distribution and smooth engagement through single spring technology.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Design</h3>
+                        <p>Utilizes a cone-shaped diaphragm spring between pressure plate and cover.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Key Features</h3>
+                        <p>Self-adjusting mechanism with minimal maintenance requirements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Working Process -->
+            <div class="content-block">
+                <h2><i class="fas fa-cogs"></i> Working Process</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <i class="fas fa-compress-alt"></i>
+                        <h3>Spring Compression</h3>
+                        <p>Initial state with spring pressure</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>Engagement</h3>
+                        <p>Pressure plate contact</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-expand-alt"></i>
+                        <h3>Release</h3>
+                        <p>Spring tension release</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-sync"></i>
+                        <h3>Reset</h3>
+                        <p>Return to initial position</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components -->
+            <div class="content-block">
+                <h2><i class="fas fa-tools"></i> Components</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Diaphragm Clutch Components" class="zoomable">
+                        <div class="image-caption">Detailed component breakdown</div>
+                    </div>
+                    <div class="tech-details">
+                        <h3>Key Components</h3>
+                        <ul>
+                            <li>Diaphragm Spring</li>
+                            <li>Pressure Plate</li>
+                            <li>Clutch Disc</li>
+                            <li>Release Bearing</li>
+                            <li>Cover Assembly</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Details -->
+            <div class="content-block">
+                <h2><i class="fas fa-microchip"></i> Technical Details</h2>
+                <div class="grid-2">
+                    <div class="tech-details">
+                        <h3>Spring Mechanics</h3>
+                        <ul>
+                            <li>Belleville spring principle</li>
+                            <li>Progressive rate characteristics</li>
+                            <li>Self-adjusting capabilities</li>
+                            <li>Heat dissipation properties</li>
+                        </ul>
+                    </div>
+                    <div class="tech-details">
+                        <h3>Pressure Distribution</h3>
+                        <ul>
+                            <li>Even pressure application</li>
+                            <li>Reduced wear patterns</li>
+                            <li>Optimized friction surface contact</li>
+                            <li>Consistent engagement feel</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advantages & Limitations -->
+            <div class="content-block">
+                <h2><i class="fas fa-balance-scale"></i> Advantages & Limitations</h2>
+                <div class="comparison">
+                    <div class="advantages">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Lower operating effort</li>
+                            <li>Consistent performance</li>
+                            <li>Self-adjusting wear compensation</li>
+                            <li>Reduced maintenance needs</li>
+                            <li>Better heat dissipation</li>
+                        </ul>
+                    </div>
+                    <div class="limitations">
+                        <h3>Limitations</h3>
+                        <ul>
+                            <li>Higher initial cost</li>
+                            <li>Complex manufacturing</li>
+                            <li>Specialized repair needs</li>
+                            <li>Temperature sensitivity</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Guide -->
+            <div class="content-block">
+                <h2><i class="fas fa-images"></i> Visual Guide</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Diaphragm Clutch Operation" class="zoomable">
+                        <div class="image-caption">Operation Flow Diagram</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Diaphragm Clutch Assembly" class="zoomable">
+                        <div class="image-caption">Assembly Cross-Section</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<!-- Hydraulic Clutch Section -->
+        <section id="hydraulic" class="section">
+            <!-- Quick Glance -->
+            <div class="content-block quick-glance">
+                <h2><i class="fas fa-bolt"></i> Quick Glance</h2>
+                <p>A clutch system that uses hydraulic pressure to transmit force from the pedal to the release mechanism, offering reduced pedal effort and improved control through fluid dynamics.</p>
+            </div>
+
+            <!-- Core Concepts -->
+            <div class="content-block">
+                <h2><i class="fas fa-brain"></i> Core Concepts</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Role</h3>
+                        <p>Transmits clutch pedal force through hydraulic pressure for efficient and smooth operation.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Design</h3>
+                        <p>Uses master and slave cylinders connected by hydraulic lines filled with brake fluid.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Key Features</h3>
+                        <p>Reduced pedal effort, consistent performance, and improved control.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Working Process -->
+            <div class="content-block">
+                <h2><i class="fas fa-cogs"></i> Working Process</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <i class="fas fa-pedal"></i>
+                        <h3>Pedal Input</h3>
+                        <p>Initial force application</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-tint"></i>
+                        <h3>Fluid Transfer</h3>
+                        <p>Hydraulic pressure build-up</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h3>Slave Activation</h3>
+                        <p>Force multiplication</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-circle-notch"></i>
+                        <h3>Clutch Release</h3>
+                        <p>Disengagement complete</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components -->
+            <div class="content-block">
+                <h2><i class="fas fa-tools"></i> Components</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Hydraulic Clutch Components" class="zoomable">
+                        <div class="image-caption">Hydraulic system components</div>
+                    </div>
+                    <div class="tech-details">
+                        <h3>Key Components</h3>
+                        <ul>
+                            <li>Master Cylinder</li>
+                            <li>Slave Cylinder</li>
+                            <li>Hydraulic Lines</li>
+                            <li>Reservoir</li>
+                            <li>Release Bearing</li>
+                            <li>Clutch Fluid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Details -->
+            <div class="content-block">
+                <h2><i class="fas fa-microchip"></i> Technical Details</h2>
+                <div class="grid-2">
+                    <div class="tech-details">
+                        <h3>Hydraulic Mechanics</h3>
+                        <ul>
+                            <li>Pascal's law application</li>
+                            <li>Pressure multiplication system</li>
+                            <li>Hydraulic fluid specifications</li>
+                            <li>Bleeding requirements</li>
+                        </ul>
+                    </div>
+                    <div class="tech-details">
+                        <h3>System Dynamics</h3>
+                        <ul>
+                            <li>Pressure distribution</li>
+                            <li>Force multiplication ratio</li>
+                            <li>Response characteristics</li>
+                            <li>Temperature effects</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advantages & Limitations -->
+            <div class="content-block">
+                <h2><i class="fas fa-balance-scale"></i> Advantages & Limitations</h2>
+                <div class="comparison">
+                    <div class="advantages">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Reduced pedal effort</li>
+                            <li>Smooth operation</li>
+                            <li>Self-adjusting mechanism</li>
+                            <li>Consistent performance</li>
+                            <li>Improved ergonomics</li>
+                        </ul>
+                    </div>
+                    <div class="limitations">
+                        <h3>Limitations</h3>
+                        <ul>
+                            <li>Regular fluid maintenance</li>
+                            <li>Potential fluid leaks</li>
+                            <li>Air bleeding requirement</li>
+                            <li>Temperature sensitivity</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Guide -->
+            <div class="content-block">
+                <h2><i class="fas fa-images"></i> Visual Guide</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Hydraulic Clutch Operation" class="zoomable">
+                        <div class="image-caption">Hydraulic System Operation</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Hydraulic Clutch Assembly" class="zoomable">
+                        <div class="image-caption">System Assembly Layout</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-Coil Clutch Section -->
+        <section id="multicoil" class="section">
+            <!-- Quick Glance -->
+            <div class="content-block quick-glance">
+                <h2><i class="fas fa-bolt"></i> Quick Glance</h2>
+                <p>Traditional clutch design utilizing multiple coil springs for pressure plate operation, known for its robust construction and serviceable nature in heavy-duty applications.</p>
+            </div>
+
+            <!-- Core Concepts -->
+            <div class="content-block">
+                <h2><i class="fas fa-brain"></i> Core Concepts</h2>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Role</h3>
+                        <p>Provides clutch engagement through multiple evenly-spaced coil springs acting on the pressure plate.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Design</h3>
+                        <p>Uses multiple springs arranged in a circular pattern for distributed force application.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Key Features</h3>
+                        <p>Serviceable components with individual spring replacement capability.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Working Process -->
+            <div class="content-block">
+                <h2><i class="fas fa-cogs"></i> Working Process</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <i class="fas fa-compress"></i>
+                        <h3>Spring Loading</h3>
+                        <p>Multiple springs compressed</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-arrows-alt-h"></i>
+                        <h3>Force Distribution</h3>
+                        <p>Even pressure application</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-expand"></i>
+                        <h3>Spring Release</h3>
+                        <p>Coordinated disengagement</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-redo"></i>
+                        <h3>Return</h3>
+                        <p>Springs restore position</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Components -->
+            <div class="content-block">
+                <h2><i class="fas fa-tools"></i> Components</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Multi-Coil Clutch Components" class="zoomable">
+                        <div class="image-caption">Multi-coil system components</div>
+                    </div>
+                    <div class="tech-details">
+                        <h3>Key Components</h3>
+                        <ul>
+                            <li>Multiple Coil Springs</li>
+                            <li>Spring Retainers</li>
+                            <li>Pressure Plate</li>
+                            <li>Release Levers</li>
+                            <li>Clutch Cover</li>
+                            <li>Release Bearing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Details -->
+            <div class="content-block">
+                <h2><i class="fas fa-microchip"></i> Technical Details</h2>
+                <div class="grid-2">
+                    <div class="tech-details">
+                        <h3>Spring Mechanics</h3>
+                        <ul>
+                            <li>Individual spring rates</li>
+                            <li>Load distribution patterns</li>
+                            <li>Wear compensation</li>
+                            <li>Spring fatigue factors</li>
+                        </ul>
+                    </div>
+                    <div class="tech-details">
+                        <h3>Operating Parameters</h3>
+                        <ul>
+                            <li>Pressure plate travel</li>
+                            <li>Spring tension settings</li>
+                            <li>Release lever ratios</li>
+                            <li>Wear tolerances</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advantages & Limitations -->
+            <div class="content-block">
+                <h2><i class="fas fa-balance-scale"></i> Advantages & Limitations</h2>
+                <div class="comparison">
+                    <div class="advantages">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Simple design principle</li>
+                            <li>Individual spring replacement</li>
+                            <li>Cost-effective maintenance</li>
+                            <li>Robust construction</li>
+                            <li>Proven reliability</li>
+                        </ul>
+                    </div>
+                    <div class="limitations">
+                        <h3>Limitations</h3>
+                        <ul>
+                            <li>Higher pedal effort</li>
+                            <li>Frequent maintenance</li>
+                            <li>Uneven wear possible</li>
+                            <li>Heavier assembly</li>
+                            <li>Spring fatigue over time</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Guide -->
+            <div class="content-block">
+                <h2><i class="fas fa-images"></i> Visual Guide</h2>
+                <div class="grid-2">
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Multi-Coil Operation" class="zoomable">
+                        <div class="image-caption">Spring Operation Sequence</div>
+                    </div>
+                    <div class="image-container">
+                        <img src="/api/placeholder/800/400" alt="Multi-Coil Assembly" class="zoomable">
+                        <div class="image-caption">Spring Arrangement Pattern</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for Images -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <img src="" alt="Enlarged Image">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab Switching
+            const tabs = document.querySelectorAll('.tab');
+            const sections = document.querySelectorAll('.section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.dataset.tab;
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Update active section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === target) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Image Modal
+            const modal = document.getElementById('imageModal');
+            const modalImg = modal.querySelector('img');
+            const closeBtn = modal.querySelector('.close-modal');
+
+            // Open modal for zoomable images
+            document.querySelectorAll('.zoomable').forEach(img => {
+                img.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt;
+                });
+            });
+
+            // Close modal with button
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Close modal with escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // Card hover effects
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-5px)';
+                    card.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+                });
+            });
+
+            // Process steps hover effects
+            document.querySelectorAll('.step').forEach(step => {
+                step.addEventListener('mouseenter', () => {
+                    step.style.transform = 'translateY(-5px)';
+                    step.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+
+                step.addEventListener('mouseleave', () => {
+                    step.style.transform = 'translateY(0)';
+                    step.style.boxShadow = 'none';
+                });
+            });
+
+            // Prevent text selection on double click
+            document.querySelectorAll('.tab, .card, .step').forEach(element => {
+                element.addEventListener('mousedown', (e) => {
+                    if (e.detail > 1) e.preventDefault();
+                });
+            });
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.querySelector(anchor.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Initialize card animations on scroll
+            const observeCards = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease-out';
+                observeCards.observe(card);
+            });
+        });
+</script>
+</body>
+</html>

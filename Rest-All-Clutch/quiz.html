@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutch Systems Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --background-color: #f5f6fa;
+            --card-color: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #357abd);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Category Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 2rem;
+            background: var(--card-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Questions List */
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background: var(--card-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            height: 2px;
+            background: var(--text-secondary);
+            margin: 0 0.5rem;
+        }
+
+        .answer-container {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .answer {
+            display: none;
+            background: #e8f5e9;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: var(--success-color);
+            font-weight: 500;
+        }
+
+        .answer.visible {
+            display: inline-block;
+        }
+
+        .show-answer-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .show-answer-btn:hover {
+            background: #357abd;
+        }
+
+        /* Category Labels */
+        .category-label {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-diaphragm {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .category-hydraulic {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .category-multicoil {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-btn {
+                width: 100%;
+            }
+
+            .question-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Clutch Systems Quiz</h1>
+            <p>Test your knowledge with these fill-in-the-blank questions</p>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">All Questions</button>
+            <button class="filter-btn" data-category="diaphragm">Diaphragm Clutch</button>
+            <button class="filter-btn" data-category="hydraulic">Hydraulic Clutch</button>
+            <button class="filter-btn" data-category="multicoil">Multi-Coil Clutch</button>
+        </div>
+
+        <div class="questions-list">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Quiz Questions Data
+        const questions = [
+            // Diaphragm Type Clutch Questions
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm spring pressure plate assembly relies on a __________ diaphragm spring.',
+                answer: 'cone-shaped'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm spring is a single thin sheet of metal that works similarly to the bottom of an __________.',
+                answer: 'oil can'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The metal __________ when pressure is applied and returns to its original shape when pressure is removed.',
+                answer: 'yields'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The thrust pad flexes the __________ and thus frees the pressure plate, disengaging the clutch.',
+                answer: 'diaphragm spring'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm spring is placed between the pressure plate and the pressure plate __________.',
+                answer: 'cover'
+            },
+            {
+                category: 'diaphragm',
+                question: 'When pressure is applied to the diaphragm spring, it moves the __________ plate.',
+                answer: 'pressure'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm spring replaces the need for multiple __________ in the clutch system.',
+                answer: 'coil springs'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm spring provides a more consistent and __________ operation of the clutch.',
+                answer: 'reliable'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm clutch has fewer moving parts, leading to less __________ and maintenance.',
+                answer: 'wear'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm clutch allows for a more __________ clutch operation due to its design.',
+                answer: 'smooth'
+            },
+
+            // Hydraulic Clutch System Questions
+            {
+                category: 'hydraulic',
+                question: 'A hydraulic clutch system is controlled by a __________ system.',
+                answer: 'hydraulic'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic clutch system transmits motion from one sealed cylinder to another through a __________.',
+                answer: 'hydraulic line'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic linkage is more compact and __________ compared to cable linkage.',
+                answer: 'flexible'
+            },
+            {
+                category: 'hydraulic',
+                question: 'Hydraulic pressure is developed by the __________ cylinder.',
+                answer: 'master'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic clutch system decreases the required __________ effort.',
+                answer: 'pedal'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic system provides a precise method of controlling clutch __________.',
+                answer: 'operation'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The __________ cylinder converts pedal movement into hydraulic pressure.',
+                answer: 'master'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The __________ cylinder receives hydraulic pressure and moves the clutch fork.',
+                answer: 'slave'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic system allows for better clutch __________ and engagement.',
+                answer: 'control'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The movement of the piston and primary cup develops hydraulic __________.',
+                answer: 'pressure'
+            },
+
+            // Multi-Coil Spring Clutch Questions
+            {
+                category: 'multicoil',
+                question: 'In older clutch designs, __________ springs were used to provide the clamping effort.',
+                answer: 'multi-coil'
+            },
+            {
+                category: 'multicoil',
+                question: 'Over time, coil spring __________ and __________ would change due to wear and tear.',
+                answer: 'tension, length'
+            },
+            {
+                category: 'multicoil',
+                question: 'Weak tension in coil springs could lead to __________ clamping force.',
+                answer: 'uneven'
+            },
+            {
+                category: 'multicoil',
+                question: 'Uneven clamping force in a clutch could result in clutch __________ and __________.',
+                answer: 'drag, slip'
+            },
+            {
+                category: 'multicoil',
+                question: 'Clutch drag and slip could make gear shifting __________.',
+                answer: 'hard'
+            },
+            {
+                category: 'multicoil',
+                question: 'The wear and tear of coil springs could lead to a loss of __________ force.',
+                answer: 'clamping'
+            },
+            {
+                category: 'multicoil',
+                question: 'Due to the drawbacks of multi-coil spring clutches, all modern manufacturers use __________ type clutches.',
+                answer: 'diaphragm'
+            },
+            {
+                category: 'multicoil',
+                question: 'Multi-coil spring clutches required periodic __________ to maintain performance.',
+                answer: 'adjustments'
+            },
+            {
+                category: 'multicoil',
+                question: 'The uneven force in coil springs led to __________ clutch performance.',
+                answer: 'inconsistent'
+            },
+            {
+                category: 'multicoil',
+                question: 'The modern diaphragm clutch provides __________ and more uniform pressure.',
+                answer: 'smoother'
+            },
+
+            // Advantages of Diaphragm Clutch
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm clutch has a __________ design, allowing for a shallow clutch bell housing.',
+                answer: 'compact'
+            },
+            {
+                category: 'diaphragm',
+                question: 'Fewer moving parts help eliminate __________, __________, and __________.',
+                answer: 'squeaks, rattles, wear'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The diaphragm acts as both a __________ spring and __________ fingers.',
+                answer: 'clamping, release'
+            },
+            {
+                category: 'diaphragm',
+                question: 'The clamping load in a diaphragm clutch is __________ by engine speed.',
+                answer: 'unaffected'
+            },
+
+            // Working of Hydraulic System
+            {
+                category: 'hydraulic',
+                question: 'The primary cup and piston are forced back by the master cylinder piston __________ spring.',
+                answer: 'return'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The external springs move the slave cylinder pushrod and piston back to the __________ position.',
+                answer: 'engaged'
+            },
+            {
+                category: 'hydraulic',
+                question: 'There is no hydraulic __________ in the system when the clutch is engaged.',
+                answer: 'pressure'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The movement of the slave cylinder piston is transmitted to the clutch fork, which __________ the clutch.',
+                answer: 'disengages'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic system ensures smooth and __________ clutch operation.',
+                answer: 'precise'
+            },
+
+            // Additional Components and System Questions
+            {
+                category: 'hydraulic',
+                question: 'The master cylinder is responsible for generating __________ pressure.',
+                answer: 'hydraulic'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The slave cylinder receives hydraulic pressure and moves the clutch __________.',
+                answer: 'fork'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The hydraulic clutch uses a sealed system to prevent __________.',
+                answer: 'leaks'
+            },
+            {
+                category: 'hydraulic',
+                question: 'Hydraulic pressure is transmitted through __________ tubing.',
+                answer: 'hydraulic'
+            },
+            {
+                category: 'hydraulic',
+                question: 'The movement of hydraulic fluid replaces the need for __________ linkages.',
+                answer: 'mechanical'
+            }
+        ];
+
+        // Function to create question cards
+        function createQuestionCard(question, index) {
+            return `
+                <div class="question-card" data-category="${question.category}">
+                    <span class="category-label category-${question.category}">${question.category}</span>
+                    <div class="question-number">Question ${index + 1}</div>
+                    <div class="question-text">${question.question}</div>
+                    <div class="answer-container">
+                        <button class="show-answer-btn" onclick="toggleAnswer(${index})">
+                            <i class="fas fa-eye"></i> Show Answer
+                        </button>
+                        <div class="answer" id="answer-${index}">${question.answer}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize questions
+        const questionsList = document.querySelector('.questions-list');
+        questions.forEach((question, index) => {
+            questionsList.innerHTML += createQuestionCard(question, index);
+        });
+
+        // Toggle answer visibility
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            const button = answer.previousElementSibling;
+            
+            answer.classList.toggle('visible');
+            if (answer.classList.contains('visible')) {
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+            } else {
+                button.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+            }
+        }
+
+        // Filter questions by category
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter questions
+                const category = button.dataset.category;
+                const questionCards = document.querySelectorAll('.question-card');
+                
+                questionCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

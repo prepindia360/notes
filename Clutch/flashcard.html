@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutch Flashcards</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --secondary: #ec4899;
+            --secondary-light: #fbcfe8;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, var(--secondary-light), white);
+        }
+
+        .card-content {
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .card-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        .card-content ul {
+            list-style-position: inside;
+            text-align: left;
+            margin-top: 1rem;
+        }
+
+        .card-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .control-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .control-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .flashcard {
+                height: 400px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+
+        /* Animation for card transition */
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flashcard {
+            animation: cardIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Clutch System Flashcards</h1>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="current-card">1</span>/<span id="total-cards">14</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="card-face card-front">
+                    <div class="card-content">
+                        <h3>Question</h3>
+                        <p id="question"></p>
+                    </div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-content">
+                        <h3>Answer</h3>
+                        <div id="answer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" id="prev-btn" disabled>
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <button class="control-btn" id="flip-btn">
+                <i class="fas fa-sync"></i> Flip Card
+            </button>
+            <button class="control-btn" id="next-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            {
+                question: "What is the primary function of a clutch in a vehicle?",
+                answer: "The clutch engages and disengages the engine from the transmission, allowing smooth power transfer."
+            },
+            {
+                question: "How does pressing the clutch pedal affect the transmission?",
+                answer: "Pressing the clutch pedal disengages the clutch from the gearbox, stopping power transmission."
+            },
+            {
+                question: "What are the main requirements of a clutch?",
+                answer: "<ul><li>Torque transmission</li><li>Gradual engagement</li><li>Dynamic balancing</li><li>Vibration dampening</li></ul>"
+            },
+            {
+                question: "What principle does the clutch work on?",
+                answer: "The clutch operates on the principle of friction between two surfaces."
+            },
+            {
+                question: "What factors affect the friction in a clutch?",
+                answer: "<ul><li>Surface area</li><li>Applied pressure</li><li>Coefficient of friction</li></ul>"
+            },
+            {
+                question: "Name three types of clutches.",
+                answer: "<ul><li>Friction clutch</li><li>Dog clutch</li><li>Centrifugal clutch</li></ul>"
+            },
+            {
+                question: "What is a positive clutch?",
+                answer: "A positive clutch engages abruptly without slip, often used in machinery requiring firm power transmission."
+            },
+            {
+                question: "Why are sprung clutches preferred for street use?",
+                answer: "They dampen engagement, soften driveline shock, and reduce clutch engagement noise."
+            },
+            {
+                question: "What are the main components of a clutch disc?",
+                answer: "<ul><li>Hub flange</li><li>Friction ring</li><li>Clutch facing</li><li>Cushion springs</li><li>Torsional springs</li></ul>"
+            },
+            {
+                question: "What is the function of torsional springs in a clutch?",
+                answer: "They help dampen vibrations and smooth clutch engagement."
+            },
+            {
+                question: "How does clutch actuation work?",
+                answer: "The clutch transfers power from the engine to the gearbox, and disengages when the clutch pedal is pressed."
+            },
+            {
+                question: "What happens when the clutch is disengaged?",
+                answer: "No power is transmitted to the gearbox, allowing gear shifting."
+            },
+            {
+                question: "What happens when the clutch is engaged?",
+                answer: "The engine power is transmitted to the wheels, driving the vehicle."
+            },
+            {
+                question: "What is the purpose of a clutch in preventing gear wear?",
+                answer: "It allows smooth engagement and disengagement, reducing stress on gears."
+            }
+        ];
+
+        let currentCard = 0;
+        let startTime = new Date();
+
+        const flashcard = document.getElementById('flashcard');
+        const questionEl = document.getElementById('question');
+        const answerEl = document.getElementById('answer');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const flipBtn = document.getElementById('flip-btn');
+        const currentCardEl = document.getElementById('current-card');
+        const totalCardsEl = document.getElementById('total-cards');
+        const timerEl = document.getElementById('timer');
+        const progressEl = document.getElementById('progress');
+
+        function updateCard() {
+            questionEl.textContent = flashcards[currentCard].question;
+            answerEl.innerHTML = flashcards[currentCard].answer;
+            currentCardEl.textContent = currentCard + 1;
+            totalCardsEl.textContent = flashcards.length;
+            
+            // Update progress bar
+            const progress = ((currentCard + 1) / flashcards.length) * 100;
+            progressEl.style.width = `${progress}%`;
+
+            // Update button states
+            prevBtn.disabled = currentCard === 0;
+            nextBtn.disabled = currentCard === flashcards.length - 1;
+
+            // Reset card flip
+            flashcard.classList.remove('flipped');
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = Math.floor((now - startTime) / 1000);
+            const minutes = Math.floor(diff / 60).toString().padStart(2, '0');
+            const seconds = (diff % 60).toString().padStart(2, '0');
+            timerEl.textContent = `${minutes}:${seconds}`;
+        }
+
+        flipBtn.addEventListener('click', () => {
+            flashcard.classList.toggle('flipped');
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentCard > 0) {
+                currentCard--;
+                updateCard();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentCard < flashcards.length - 1) {
+                currentCard++;
+                updateCard();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                prevBtn.click();
+            } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+                nextBtn.click();
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                flipBtn.click();
+            }
+        });
+
+        // Initialize
+        updateCard();
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

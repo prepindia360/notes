@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction Clutch - Interactive Study Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Core Colors - Using a warmer, more mechanical color scheme */
+            --primary: #e65100;
+            --primary-light: #ff833a;
+            --primary-dark: #ac1900;
+            --success: #2e7d32;
+            --success-light: #60ad5e;
+            --danger: #c62828;
+            --danger-light: #ff5f52;
+            --warning: #f9a825;
+            --warning-light: #ffd95a;
+            --info: #1565c0;
+            --info-light: #5e92f3;
+            --brown: #5d4037;
+            --brown-light: #8b6b61;
+            --steel: #455a64;
+            --steel-light: #718792;
+
+            /* Background Colors */
+            --bg-primary: #fff8f1;
+            --bg-secondary: #fff3e0;
+            --bg-tertiary: #ffe0b2;
+
+            /* Text Colors */
+            --text-primary: #212121;
+            --text-secondary: #424242;
+            --text-light: #757575;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-glance {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Core Sections */
+        .core-sections {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .core-section {
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .operation {
+            background: linear-gradient(135deg, var(--brown-light), var(--brown));
+        }
+
+        .mechanism {
+            background: linear-gradient(135deg, var(--steel-light), var(--steel));
+        }
+
+        .engagement {
+            background: linear-gradient(135deg, var(--warning-light), var(--warning));
+        }
+
+        /* Working Process Flow */
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            text-align: center;
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            flex: 1;
+            min-width: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Components */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .component-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Memory Aid */
+        .memory-aid {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .memory-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .memory-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .first-letter {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 600;
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            background: white;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .collapsible-header {
+            padding: 1.25rem;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .collapsible-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible.active .collapsible-content {
+            padding: 1.5rem;
+            max-height: 2000px;
+        }
+
+        /* Quick Reference */
+        .quick-ref {
+            position: fixed;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .quick-ref.hidden {
+            transform: translateY(-50%) translateX(110%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .core-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-items-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-ref {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Quick Glance -->
+        <div class="header">
+            <h1>Friction Clutch <span style="font-size: 1rem;">(10 Marks)</span></h1>
+            <div class="quick-glance">
+                <h3><i class="fas fa-info-circle"></i> Quick Glance</h3>
+                <p>A mechanical device that engages and disengages power transmission from driving shaft to driven shaft. Uses friction between surfaces to transfer rotational power.</p>
+            </div>
+        </div>
+
+        <!-- Core Sections -->
+        <div class="collapsible active" id="core">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-star"></i> Core Concepts</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="core-sections">
+                    <div class="core-section operation">
+                        <h3><i class="fas fa-cog"></i> Operation</h3>
+                        <p>Engages/disengages power transmission through controlled friction between surfaces</p>
+                    </div>
+                    <div class="core-section mechanism">
+                        <h3><i class="fas fa-gears"></i> Mechanism</h3>
+                        <p>Uses spring force and pressure plate to create friction between surfaces</p>
+                    </div>
+                    <div class="core-section engagement">
+                        <h3><i class="fas fa-link"></i> Engagement</h3>
+                        <p>Controlled through pedal operation for smooth power transfer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Working Process -->
+        <div class="collapsible" id="working">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-sync-alt"></i> Working Process</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="flow-steps">
+                    <div class="step">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h4>Pedal Release</h4>
+                        <p>Spring force applied</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-circle-notch"></i>
+                        <h4>Plate Contact</h4>
+                        <p>Surfaces meet</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-fire"></i>
+                        <h4>Friction</h4>
+                        <p>Force creates friction</p>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h4>Power Transfer</h4>
+                        <p>Rotation transmitted</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Components -->
+        <div class="collapsible" id="components">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-tools"></i> Components</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>Primary Components</h3>
+                        <ul>
+                            <li>Clutch Plate</li>
+                            <li>Pressure Plate</li>
+                            <li>Flywheel</li>
+                            <li>Diaphragm Spring</li>
+                        </ul>
+                    </div>
+                    <div class="component-card">
+                        <h3>Control System</h3>
+                        <ul>
+                            <li>Clutch Pedal</li>
+                            <li>Release Bearing</li>
+                            <li>Release Fork</li>
+                            <li>Cable/Hydraulic System</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Aid Section -->
+        <div class="collapsible" id="memory-aid">
+            <div class="collapsible-header">
+                <h2><i class="fas fa-brain"></i> Memory Aid</h2>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="collapsible-content">
+                <div class="memory-aid">
+                    <h3>CLUTCH-PRO</h3>
+                    <div class="memory-items-container">
+                        <div class="memory-item">
+                            <div class="first-letter">C</div>
+                            <span>Controlled engagement</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">L</div>
+                            <span>Leverage mechanism</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">U</div>
+                            <span>Uniform pressure</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">T</div>
+                            <span>Torque transfer</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">C</div>
+                            <span>Continuous operation</span>
+                        </div>
+                        <div class="memory-item">
+                            <div class="first-letter">H</div>
+                            <span>Heat dissipation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference Panel -->
+        <div class="quick-ref hidden">
+            <h3>Quick Review</h3>
+            <ul>
+                <li>Friction-based power transmission</li>
+                <li>Spring-loaded operation</li>
+                <li>Pedal-controlled engagement</li>
+                <li>Heat management critical</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Collapsible sections
+            document.querySelectorAll('.collapsible-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const section = header.parentElement;
+                    section.classList.toggle('active');
+                    const icon = header.querySelector('.fas.fa-chevron-down');
+                    icon.style.transform = section.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                });
+            });
+
+            // Quick Reference Panel
+            const quickRef = document.querySelector('.quick-ref');
+            // Floating Controls
+            const floatingControls = document.createElement('div');
+            floatingControls.className = 'floating-controls';
+            floatingControls.style.cssText = `
+                position: fixed;
+                right: 1rem;
+                top: 1rem;
+                display: flex;
+                gap: 0.5rem;
+                z-index: 1000;
+            `;
+            
+            const toggleQuickBtn = document.createElement('div');
+            toggleQuickBtn.className = 'floating-btn';
+            toggleQuickBtn.innerHTML = '<i class="fas fa-list"></i>';
+            toggleQuickBtn.title = 'Toggle Quick Reference';
+            toggleQuickBtn.style.cssText = `
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: var(--primary);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            `;
+
+            floatingControls.appendChild(toggleQuickBtn);
+            document.body.appendChild(floatingControls);
+
+            toggleQuickBtn.addEventListener('click', () => {
+                quickRef.classList.toggle('hidden');
+            });
+
+            toggleQuickBtn.addEventListener('mouseenter', () => {
+                toggleQuickBtn.style.transform = 'translateY(-2px)';
+                toggleQuickBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.3)';
+            });
+
+            toggleQuickBtn.addEventListener('mouseleave', () => {
+                toggleQuickBtn.style.transform = 'translateY(0)';
+                toggleQuickBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+            });
+
+            // Scroll to Top Button
+            const scrollTopBtn = document.createElement('div');
+            scrollTopBtn.className = 'scroll-top';
+            scrollTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            scrollTopBtn.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: var(--primary);
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                opacity: 0;
+                transition: all 0.3s ease;
+                z-index: 1000;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            `;
+
+            document.body.appendChild(scrollTopBtn);
+
+            // Show/Hide Scroll to Top button
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.style.opacity = '1';
+                } else {
+                    scrollTopBtn.style.opacity = '0';
+                }
+            });
+
+            // Scroll to top functionality
+            scrollTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Hover effects for scroll top button
+            scrollTopBtn.addEventListener('mouseenter', () => {
+                scrollTopBtn.style.transform = 'translateY(-2px)';
+                scrollTopBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.3)';
+            });
+
+            scrollTopBtn.addEventListener('mouseleave', () => {
+                scrollTopBtn.style.transform = 'translateY(0)';
+                scrollTopBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+            });
+
+            // Add smooth scrolling to all section links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Initialize all collapsible sections except the first one as closed
+            document.querySelectorAll('.collapsible:not(:first-child)').forEach(section => {
+                section.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

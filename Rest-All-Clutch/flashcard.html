@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clutch Systems Flashcards</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --background-color: #f5f6fa;
+            --card-color: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #357abd);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Category Selection */
+        .category-select {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--card-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Flashcard Styles */
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateX(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--card-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card-back {
+            transform: rotateX(180deg);
+            background: linear-gradient(135deg, #f6f9fc, #f1f5f9);
+        }
+
+        /* Navigation Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .control-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            background: var(--card-color);
+            height: 6px;
+            border-radius: 3px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .flashcard {
+                height: 250px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Clutch Systems Flashcards</h1>
+        <p>Test your knowledge of different clutch types and mechanisms</p>
+    </header>
+
+    <div class="container">
+        <!-- Category Selection -->
+        <div class="category-select">
+            <button class="category-btn active" data-category="all">All Cards</button>
+            <button class="category-btn" data-category="diaphragm">Diaphragm Clutch</button>
+            <button class="category-btn" data-category="hydraulic">Hydraulic Clutch</button>
+            <button class="category-btn" data-category="multicoil">Multi-Coil Clutch</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <!-- Flashcard -->
+        <div class="flashcard-container">
+            <div class="flashcard">
+                <div class="card-face card-front">
+                    <p class="question"></p>
+                </div>
+                <div class="card-face card-back">
+                    <p class="answer"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="control-btn" id="prevBtn" disabled>
+                <i class="fas fa-arrow-left"></i> Previous
+            </button>
+            <button class="control-btn" id="flipBtn">
+                <i class="fas fa-sync-alt"></i> Flip Card
+            </button>
+            <button class="control-btn" id="nextBtn">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="currentCard">1</div>
+                <div class="stat-label">Current Card</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalCards">17</div>
+                <div class="stat-label">Total Cards</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="cardsReviewed">0</div>
+                <div class="stat-label">Cards Reviewed</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Flashcard data
+        const flashcards = [
+            {
+                category: 'diaphragm',
+                question: 'What component moves the pressure plate back and forth in a diaphragm type clutch?',
+                answer: 'Diaphragm spring'
+            },
+            {
+                category: 'diaphragm',
+                question: 'How does the diaphragm spring function in a clutch system?',
+                answer: 'It yields when pressure is applied and returns to its original shape when pressure is removed.'
+            },
+            {
+                category: 'diaphragm',
+                question: 'What happens when the diaphragm spring pushes against the pressure plate?',
+                answer: 'The clutch is engaged.'
+            },
+            {
+                category: 'hydraulic',
+                question: 'How is the clutch assembly controlled in a hydraulic clutch system?',
+                answer: 'By a hydraulic system using fluid pressure.'
+            },
+            {
+                category: 'hydraulic',
+                question: 'What is the function of the master cylinder in a hydraulic clutch system?',
+                answer: 'It creates hydraulic pressure by moving the piston and primary cup.'
+            },
+            {
+                category: 'hydraulic',
+                question: 'What fluid is commonly used in a hydraulic clutch system?',
+                answer: 'Brake fluid'
+            },
+            {
+                category: 'multicoil',
+                question: 'What issue arises in multi-coil spring clutches over time?',
+                answer: 'Coil spring tension and length change due to wear, leading to uneven clamping force.'
+            },
+            {
+                category: 'multicoil',
+                question: 'What problems can an uneven clamping force cause in a clutch system?',
+                answer: 'Clutch drag, slip, and hard gear shifting.'
+            },
+            {
+                category: 'multicoil',
+                question: 'Why have manufacturers replaced multi-coil spring clutches with diaphragm clutches?',
+                answer: 'Diaphragm clutches provide a more stable and reliable clamping effort.'
+            }
+        ];
+
+        // Variables to track state
+        let currentCategory = 'all';
+        let currentCards = [...flashcards];
+        let currentIndex = 0;
+        let cardsReviewed = 0;
+
+        // DOM Elements
+        const flashcard = document.querySelector('.flashcard');
+        const question = document.querySelector('.question');
+        const answer = document.querySelector('.answer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const flipBtn = document.getElementById('flipBtn');
+        const progressBar = document.querySelector('.progress-bar');
+        const currentCardElement = document.getElementById('currentCard');
+        const totalCardsElement = document.getElementById('totalCards');
+        const cardsReviewedElement = document.getElementById('cardsReviewed');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+
+        // Initialize
+        function initializeCards() {
+            currentCards = currentCategory === 'all' 
+                ? flashcards 
+                : flashcards.filter(card => card.category === currentCategory);
+            currentIndex = 0;
+            updateCard();
+            updateProgress();
+            updateStats();
+        }
+
+        // Update card content
+        function updateCard() {
+            question.textContent = currentCards[currentIndex].question;
+            answer.textContent = currentCards[currentIndex].answer;
+            flashcard.classList.remove('flipped');
+            updateButtonStates();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentIndex + 1) / currentCards.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Update statistics
+        function updateStats() {
+            currentCardElement.textContent = currentIndex + 1;
+            totalCardsElement.textContent = currentCards.length;
+            cardsReviewedElement.textContent = cardsReviewed;
+        }
+
+        // Update button states
+        function updateButtonStates() {
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === currentCards.length - 1;
+        }
+
+        // Event Listeners
+        flipBtn.addEventListener('click', () => {
+            flashcard.classList.toggle('flipped');
+            if (flashcard.classList.contains('flipped')) {
+                cardsReviewed++;
+                cardsReviewedElement.textContent = cardsReviewed;
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+                updateProgress();
+                updateStats();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < currentCards.length - 1) {
+                currentIndex++;
+                updateCard();
+                updateProgress();
+                updateStats();
+            }
+        });
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                initializeCards();
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (!prevBtn.disabled) prevBtn.click();
+                    break;
+                case 'ArrowRight':
+                    if (!nextBtn.disabled) nextBtn.click();
+                    break;
+                case ' ':
+                    flipBtn.click();
+                    break;
+            }
+        });
+
+        // Initialize the flashcards
+        initializeCards();
+    </script>
+</body>
+</html>

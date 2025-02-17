@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friction Clutch Quiz</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #2563eb;
+            --primary-light: #60a5fa;
+            --success: #22c55e;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .quiz-stats {
+            background: var(--card);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .question-card {
+            background: var(--card);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            height: 2px;
+            background: var(--primary);
+            margin: 0 0.25rem;
+            position: relative;
+            top: -0.25rem;
+        }
+
+        .answer-section {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .show-answer-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .show-answer-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .answer {
+            display: none;
+            padding: 0.5rem 1rem;
+            background: #f0f9ff;
+            border-radius: 0.5rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .answer.visible {
+            display: inline-block;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .question-card {
+                padding: 1rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+            }
+
+            .quiz-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Friction Clutch Quiz</h1>
+        <p>Test your knowledge with these fill-in-the-blank questions</p>
+    </div>
+
+    <div class="container">
+        <div class="quiz-stats">
+            <div class="stat">
+                <div class="stat-value" id="totalQuestions">18</div>
+                <div class="stat-label">Total Questions</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="answersRevealed">0</div>
+                <div class="stat-label">Answers Revealed</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="remainingQuestions">18</div>
+                <div class="stat-label">Questions Left</div>
+            </div>
+        </div>
+
+        <div id="questionsContainer">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "The clutch works on the principle of ________ between two surfaces.",
+                answer: "friction"
+            },
+            {
+                question: "A ________ clutch operates by pressing two friction surfaces together to transmit power.",
+                answer: "friction"
+            },
+            {
+                question: "When the clutch pedal is pressed, the clutch ________ from the transmission shaft.",
+                answer: "disengages"
+            },
+            {
+                question: "The component that keeps the friction plate clamped between the flywheel and pressure plate is the ________.",
+                answer: "spring force"
+            },
+            {
+                question: "The ________ spring is responsible for pressing the pressure plate against the friction plate.",
+                answer: "diaphragm"
+            },
+            {
+                question: "When the clutch is engaged, power is transmitted from the ________ to the gearbox.",
+                answer: "engine"
+            },
+            {
+                question: "The clutch consists of a ________ that transmits pressure from the pedal to pull back the pressure plate.",
+                answer: "thrust pad (release bearing)"
+            },
+            {
+                question: "The function of the friction clutch is to allow smooth ________ and ________ of power transmission.",
+                answer: "engagement, disengagement"
+            },
+            {
+                question: "________ clutch control is used in situations where low-speed power is needed.",
+                answer: "Partial"
+            },
+            {
+                question: "If the clutch is partially engaged, it allows ________ of power to the wheels instead of full transmission.",
+                answer: "controlled delivery"
+            },
+            {
+                question: "The ________ ring is in direct contact with the flywheel or pressure plate.",
+                answer: "friction"
+            },
+            {
+                question: "When the clutch pedal is fully released, the clutch is said to be ________.",
+                answer: "engaged"
+            },
+            {
+                question: "A ________ clutch is commonly used in automobiles for smooth power transmission.",
+                answer: "friction"
+            },
+            {
+                question: "The ________ acts as a medium between the engine shaft and the gearbox.",
+                answer: "clutch"
+            },
+            {
+                question: "The two surfaces in a friction clutch can be ________ and ________.",
+                answer: "separated, brought into contact"
+            },
+            {
+                question: "The amount of frictional force in a clutch depends on the ________ of friction, surface area, and applied pressure.",
+                answer: "coefficient"
+            },
+            {
+                question: "The main function of a clutch is to transmit ________ from the engine to the gearbox.",
+                answer: "torque"
+            },
+            {
+                question: "The clutch disengages to prevent ________ on the gearbox.",
+                answer: "wear"
+            }
+        ];
+
+        const questionsContainer = document.getElementById('questionsContainer');
+        const answersRevealedElement = document.getElementById('answersRevealed');
+        const remainingQuestionsElement = document.getElementById('remainingQuestions');
+        let answersRevealed = 0;
+
+        function createQuestionCard(question, index) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.innerHTML = `
+                <div class="question-number">Question ${index + 1}</div>
+                <div class="question-text">${question.question.replace(/________/g, '<span class="blank"></span>')}</div>
+                <div class="answer-section">
+                    <button class="show-answer-btn" onclick="revealAnswer(${index})">
+                        <i class="fas fa-eye"></i> Show Answer
+                    </button>
+                    <div class="answer" id="answer-${index}">${question.answer}</div>
+                </div>
+            `;
+            return card;
+        }
+
+        function revealAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            const button = answer.previousElementSibling;
+            
+            if (!answer.classList.contains('visible')) {
+                answer.classList.add('visible');
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Answer';
+                answersRevealed++;
+            } else {
+                answer.classList.remove('visible');
+                button.innerHTML = '<i class="fas fa-eye"></i> Show Answer';
+                answersRevealed--;
+            }
+            
+            answersRevealedElement.textContent = answersRevealed;
+            remainingQuestionsElement.textContent = questions.length - answersRevealed;
+        }
+
+        // Initialize questions
+        questions.forEach((question, index) => {
+            questionsContainer.appendChild(createQuestionCard(question, index));
+        });
+    </script>
+</body>
+</html>
